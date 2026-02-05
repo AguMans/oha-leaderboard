@@ -1,18 +1,73 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>OHA Leaderboard</title>
+    <title>OHA - Official Handcricket Association</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <h1>OHA Leaderboard</h1>
-        <table id="leaderboard">
-            <thead><tr><th>Rank</th><th>Name</th><th>Score</th></tr></thead>
-            <tbody></tbody>
-        </table>
-        <p>Last updated: <span id="timestamp"></span></p>
-    </div>
+    <header>
+        <nav>
+            <div class="logo">🏏 OHA</div>
+            <ul class="tabs">
+                <li class="tab active" data-tab="leaderboard">Leaderboard</li>
+                <li class="tab" data-tab="founder">Founder</li>
+                <li class="tab" data-tab="players">Players</li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Leaderboard Tab -->
+        <section id="leaderboard" class="tab-content active">
+            <h1>OHA Live Leaderboard</h1>
+            <table id="leaderboard-table">
+                <thead><tr><th>Rank</th><th>Player</th><th>Points</th><th>Wins</th></tr></thead>
+                <tbody></tbody>
+            </table>
+            <p>Last updated: <span id="timestamp"></span></p>
+        </section>
+
+        <!-- Founder Tab -->
+        <section id="founder" class="tab-content">
+            <div class="about-container">
+                <img src="https://via.placeholder.com/300x300/4a90e2/ffffff?text=OHA+Founder" alt="Founder">
+                <div class="about-text">
+                    <h1>Our Founder</h1>
+                    <h2>AguMans</h2>
+                    <p>The visionary creator of Official Handcricket Association. Passionate about fair play, competition, and bringing friends together through the ultimate handcricket experience.</p>
+                    <p><strong>"Handcricket isn't just a game—it's a brotherhood."</strong></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Players Tab -->
+        <section id="players" class="tab-content">
+            <h1>Our Champions</h1>
+            <div class="players-grid">
+                <div class="player-card">
+                    <div class="player-avatar">🏏</div>
+                    <h3>You</h3>
+                    <p class="wins">5 Wins | 150 Points</p>
+                </div>
+                <div class="player-card">
+                    <div class="player-avatar">⚡</div>
+                    <h3>Friend1</h3>
+                    <p class="wins">4 Wins | 120 Points</p>
+                </div>
+                <div class="player-card">
+                    <div class="player-avatar">🔥</div>
+                    <h3>Friend2</h3>
+                    <p class="wins">3 Wins | 90 Points</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Official Handcricket Association. Play Fair. Play Hard.</p>
+    </footer>
+
     <script src="script.js"></script>
 </body>
 </html>
