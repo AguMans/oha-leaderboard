@@ -1,15 +1,17 @@
-// Tab switching
+// Tab switching (Chrome style)
 document.querySelectorAll('.tab').forEach(tab => {
     tab.addEventListener('click', () => {
+        // Remove active from all
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
         
+        // Add active to clicked
         tab.classList.add('active');
         document.getElementById(tab.dataset.tab).classList.add('active');
     });
 });
 
-// Leaderboard functionality
+// Load leaderboard
 async function loadLeaderboard() {
     try {
         const response = await fetch('data.json');
@@ -20,20 +22,20 @@ async function loadLeaderboard() {
         tbody.innerHTML = '';
         
         players.forEach((player, i) => {
-            const row = `<tr>
-                <td>${i+1}🏆</td>
-                <td><strong>${player.name}</strong></td>
-                <td>${player.score}</td>
-                <td>${player.wins || 0}</td>
-            </tr>`;
-            tbody.innerHTML += row;
+            tbody.innerHTML += `
+                <tr>
+                    <td>${i+1}🏆</td>
+                    <td>${player.name}</td>
+                    <td><strong>${player.score}</strong></td>
+                    <td>${player.wins}</td>
+                </tr>
+            `;
         });
-        
         document.getElementById('timestamp').textContent = new Date().toLocaleString();
-    } catch (e) {
-        console.error('Error:', e);
+    } catch(e) {
+        console.error(e);
     }
 }
 
 loadLeaderboard();
-setInterval(loadLeaderboard, 30000); // Auto refresh every 30s
+setInterval(loadLeaderboard, 30000);

@@ -1,10 +1,11 @@
 [
-  {"name": "Megh", "score": 100,"wins": 6},
-  {"name": "Izhan", "score": 99,"wins": 10},
-  {"name": "Agatsya", "score": 95,"wins": 7},
-  {"name": "Dharm-ICC", "score": 91,"wins": 2},
-  {"name": "Shayaan", "score": 84,"wins": 2},
-  {"name": "Prathit-ICC", "score": 79,"wins": 3},
-  {"name":"Zaqi-ICC","score":76,"wins": 1},
-  {"name": "Farhan", "score": 67,"wins": 3}
+  {"name": "Megh", "score": 100, "wins": 6},
+  {"name": "Izhan", "score": 99, "wins": 10},
+  {"name": "Agatsya", "score": 95, "wins": 7},
+  {"name": "Dharm-ICC", "score": 91, "wins": 2},
+  {"name": "Shayaan", "score": 84, "wins": 2},
+  {"name": "Prathit-ICC", "score": 79, "wins": 3},
+  {"name": "Zaqi-ICC", "score": 76, "wins": 1},
+  {"name": "Farhan", "score": 67, "wins": 3}
 ]
+
