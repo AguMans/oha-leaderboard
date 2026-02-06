@@ -11,30 +11,37 @@ document.querySelectorAll('.tab').forEach(tab => {
     });
 });
 
-// Load leaderboard
-async function loadLeaderboard() {
-    try {
-        const response = await fetch('data.json');
-        const players = await response.json();
-        players.sort((a, b) => b.score - a.score);
-        
-        const tbody = document.querySelector('#leaderboard-table tbody');
-        tbody.innerHTML = '';
-        
-        players.forEach((player, i) => {
-            tbody.innerHTML += `
-                <tr>
-                    <td>${i+1}🏆</td>
-                    <td>${player.name}</td>
-                    <td><strong>${player.score}</strong></td>
-                    <td>${player.wins}</td>
-                </tr>
-            `;
-        });
-        document.getElementById('timestamp').textContent = new Date().toLocaleString();
-    } catch(e) {
-        console.error(e);
-    }
+function loadLeaderboard() {
+    // YOUR REAL JSON DATA
+    const players = [
+        {"name": "Megh", "score": 104, "wins": 11},
+        {"name": "Izhan", "score": 100, "wins": 12},
+        {"name": "Agatsya", "score": 98, "wins": 10},
+        {"name": "Dharm-ICC", "score": 91, "wins": 2},
+        {"name": "Shayaan", "score": 83, "wins": 2},
+        {"name": "Prathit-ICC", "score": 79, "wins": 3},
+        {"name": "Zaqi-ICC", "score": 76, "wins": 1},
+        {"name": "Farhan", "score": 67, "wins": 3}
+    ];
+    
+    // Sort by score (highest first)
+    players.sort((a, b) => b.score - a.score);
+    
+    const tbody = document.querySelector('#leaderboard-table tbody');
+    tbody.innerHTML = '';
+    
+    players.forEach((player, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${player.name}</td>
+            <td>${player.score}</td>
+            <td>${player.wins}</td>
+        `;
+        tbody.appendChild(row);
+    });
+    
+    document.getElementById('timestamp').textContent = new Date().toLocaleString();
 }
 
 loadLeaderboard();
