@@ -22,7 +22,40 @@
         <button id="logout-btn" onclick="logout()" style="position:fixed;top:20px;right:20px;">Logout</button>
         <!-- Your existing leaderboard content here -->
         <div class="tabs-container">
-            <!-- Paste your existing tabs/leaderboard code -->
+<div id="main-app" style="display: none;">
+    <button id="logout-btn" onclick="logout()" style="position:fixed;top:20px;right:20px;z-index:1000;background:#ff4444;color:white;border:none;padding:10px 20px;border-radius:6px;">Logout</button>
+    
+    <!-- YOUR OHA CONTENT HERE -->
+    <div class="tabs-container">
+        <div class="tab-bar">
+            <div class="tab active" data-tab="leaderboard">Leaderboard</div>
+            <div class="tab" data-tab="founder">Our Founder</div>
+            <div class="tab" data-tab="players">Players</div>
+        </div>
+
+        <div id="leaderboard" class="tab-content active">
+            <h1>🏏 OHA Leaderboard</h1>
+            <table id="leaderboard-table">
+                <thead><tr><th>Rank</th><th>Player</th><th>Points</th><th>Wins</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <div id="founder" class="tab-content">
+            <h1>👑 Our Founder</h1>
+            <div class="founder-info">
+                <img src="founder.jpg.jpg" alt="MAHAN AGATSYA">
+                <h2>MAHAN AGATSYA</h2>
+                <p>Creator of Official Handcricket Association</p>
+            </div>
+        </div>
+
+        <div id="players" class="tab-content">
+            <h1>🏃 Players</h1>
+            <!-- Your players list -->
+        </div>
+    </div>
+</div>
         </div>
     </div>
 
