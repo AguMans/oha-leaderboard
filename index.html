@@ -2,94 +2,68 @@
 <html>
 <head>
     <title>OHA - Official Handcricket Association</title>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <link rel="stylesheet" href="style.css">
-    <head>
-    <title>OHA - Official Handcricket Association</title>
-    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%2300ccff' stroke='white' stroke-width='3'/><text x='50' y='55' font-size='40' text-anchor='middle' fill='white'>🏏</text></circle></svg>">
-    <link rel="stylesheet" href="style.css">
-        <title>OHA - Official Handcricket Association</title>
-    <!-- FAVICON - NO FILE NEEDED -->
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%2300ccff' stroke='white' stroke-width='3'/%3E%3Ctext x='50' y='58' font-size='35' text-anchor='middle' fill='white' font-weight='bold'%3EOHA%3C/text%3E%3C/svg%3E">
-    <link rel="stylesheet" href="style.css">
-</head>
 </head>
 <body>
-    <div class="tabs-container">
-        <!-- Chrome-style tabs -->
-        <div class="tab-bar">
-            <div class="tab active" data-tab="leaderboard">Leaderboard</div>
-            <div class="tab" data-tab="founder">Our Founder</div>
-            <div class="tab" data-tab="players">Players</div>
-        </div>
-
-        <!-- Tab contents -->
-        <div id="leaderboard" class="tab-content active">
-            <h1>OHA Leaderboard</h1>
-            <table id="leaderboard-table">
-                <thead>
-                    <tr><th>Rank</th><th>Player</th><th>Points</th><th>Wins</th></tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-            <p>© 2026 Official Handcricket Association</p>
-        </div>
-
-<div id="founder" class="tab-content">
-    <h1>Our Founder</h1>
-    <div class="founder-info">
-        <img src="founder.jpg" alt="AguMans - OHA Founder" class="founder-photo">
-        <h2>MAHAN AGATSYA</h2>
-        <p>Creator of Official Handcricket Association</p>
-        <p><em>"Handcricket Khelenge!"</em></p>
-    </div>
-</div>
-        <div id="players" class="tab-content">
-            <h1> All Players</h1>
-            <div class="players-list">
-                <div class="player-item">
-                    <span class="rank">1</span>
-                    <span class="name">Megh</span>
-                    <span>100 pts • 6W</span>
-                </div>
-                <div class="player-item">
-                    <span class="rank">2</span>
-                    <span class="name">Izhan</span>
-                    <span>99 pts • 10W</span>
-                </div>
-                <div class="player-item">
-                    <span class="rank">3</span>
-                    <span class="name">Agatsya</span>
-                    <span>95 pts • 7W</span>
-                </div>
-                <div class="player-item">
-                    <span class="rank">4</span>
-                    <span class="name">Dharm-ICC</span>
-                    <span>91 pts • 2W</span>
-                </div>
-                <div class="player-item">
-                    <span class="rank">5</span>
-                    <span class="name">Shayaan</span>
-                    <span>84 pts • 2W</span>
-                </div>
-                <div class="player-item">
-                    <span class="rank">6</span>
-                    <span class="name">Prathit-ICC</span>
-                    <span>79 pts • 3W</span>
-                </div>
-                <div class="player-item">
-                    <span class="rank">7</span>
-                    <span class="name">Zaqi-ICC</span>
-                    <span>76 pts • 1W</span>
-                </div>
-                <div class="player-item">
-                    <span class="rank">8</span>
-                    <span class="name">Farhan</span>
-                    <span>67 pts • 3W</span>
-                </div>
-            </div>
+    <div id="login-screen" class="auth-overlay">
+        <div class="login-box">
+            <h1>OHA Login</h1>
+            <button id="google-login-btn" class="google-btn">
+                <img src="https://developers.google.com/identity/images/g-logo.png" width="20"> 
+                Sign in with Google
+            </button>
+            <p id="login-status"></p>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <div id="main-app" style="display: none;">
+        <button id="logout-btn" onclick="logout()" style="position:fixed;top:20px;right:20px;">Logout</button>
+        <!-- Your existing leaderboard content here -->
+        <div class="tabs-container">
+            <!-- Paste your existing tabs/leaderboard code -->
+        </div>
+    </div>
+
+    <script>
+        // YOUR PERFECT CONFIG!
+        const firebaseConfig = {
+          apiKey: "AIzaSyD44TTc935zw2YsF1Onv7THj7Ceoysb08I",
+          authDomain: "oha-website67.firebaseapp.com",
+          projectId: "oha-website67",
+          storageBucket: "oha-website67.firebasestorage.app",
+          messagingSenderId: "463688186479",
+          appId: "1:463688186479:web:1db28844fa0ab42953eb9a",
+          measurementId: "G-DYLC908K5B"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        document.getElementById('google-login-btn').onclick = () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider).then(() => {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-app').style.display = 'block';
+            }).catch(error => {
+                document.getElementById('login-status').textContent = 'Login failed';
+            });
+        };
+
+        function logout() {
+            auth.signOut().then(() => {
+                document.getElementById('main-app').style.display = 'none';
+                document.getElementById('login-screen').style.display = 'flex';
+            });
+        }
+
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-app').style.display = 'block';
+            }
+        });
+    </script>
 </body>
 </html>
