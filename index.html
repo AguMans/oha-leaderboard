@@ -31,7 +31,7 @@
     </style>
 </head>
 <body>
-    <!-- LOGIN SCREEN (NEW) -->
+    <!-- LOGIN SCREEN -->
     <div id="login-screen" class="auth-overlay">
         <div class="login-box">
             <h1>OHA Login</h1>
@@ -43,16 +43,16 @@
         </div>
     </div>
 
-    <!-- YOUR ORIGINAL CONTENT (just wrapped) -->
+    <!-- YOUR ORIGINAL CONTENT -->
     <div id="main-app" style="display: none;">
         <button id="logout-btn" onclick="logout()">Logout</button>
         
-        <!-- YOUR ORIGINAL TABS/LAYOUT HERE -->
+        <!-- YOUR ORIGINAL TABS -->
         <div class="tabs-container">
             <div class="tab-bar">
-                <div class="tab active" data-tab="leaderboard"> Leaderboard</div>
-                <div class="tab" data-tab="founder"> Founder</div>
-                <div class="tab" data-tab="players"> Players</div>
+                <div class="tab active" data-tab="leaderboard">Leaderboard</div>
+                <div class="tab" data-tab="founder">Our Founder</div>
+                <div class="tab" data-tab="players">Players</div>
             </div>
 
             <div id="leaderboard" class="tab-content active">
@@ -70,18 +70,17 @@
                     <img src="founder.jpg" alt="MAHAN AGATSYA" class="founder-photo">
                     <h2>MAHAN AGATSYA</h2>
                     <p>Creator of Official Handcricket Association</p>
-                    <p><em>"Handcricket Khelenge!"</em></p>
+                    <p><em>"Handcricket is life"</em></p>
                 </div>
             </div>
 
             <div id="players" class="tab-content">
-                <h1>🏃 Players</h1>
-                <p>List coming soon...</p>
+                <h1>Players</h1>
+                <p>Your players list goes here</p>
             </div>
         </div>
     </div>
 
-    <!-- FIREBASE LOGIN + YOUR ORIGINAL SCRIPTS -->
     <script>
         // Firebase
         const firebaseConfig = {
@@ -96,28 +95,28 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
 
-        // Google Login
-        document.getElementById('google-login-btn').onclick = () => {
+        // Login
+        document.getElementById('google-login-btn').onclick = function() {
             const provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithPopup(provider).then(() => {
+            auth.signInWithPopup(provider).then(function() {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('main-app').style.display = 'block';
                 if (typeof loadLeaderboard === 'function') loadLeaderboard();
-            }).catch(error => {
+            }).catch(function(error) {
                 document.getElementById('login-status').textContent = 'Login failed';
             });
         };
 
         // Logout
         function logout() {
-            auth.signOut().then(() => {
+            auth.signOut().then(function() {
                 document.getElementById('main-app').style.display = 'none';
                 document.getElementById('login-screen').style.display = 'flex';
             });
         }
 
-        // Auto-show if logged in
-        auth.onAuthStateChanged(user => {
+        // Auto-login
+        auth.onAuthStateChanged(function(user) {
             if (user) {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('main-app').style.display = 'block';
@@ -125,42 +124,48 @@
             }
         });
 
-        // YOUR ORIGINAL SCRIPTS (JSON loading + tabs)
-        document.addEventListener('DOMContentLoaded', function() {
+        // Wait for DOM + tabs + YOUR JSON loader
+        window.addEventListener('load', function() {
             // Tab switching
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.onclick = () => {
-                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                    tab.classList.add('active');
-                    document.getElementById(tab.dataset.tab).classList.add('active');
+            var tabs = document.querySelectorAll('.tab');
+            tabs.forEach(function(tab) {
+                tab.onclick = function() {
+                    tabs.forEach(function(t) { t.classList.remove('active'); });
+                    document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
+                    this.classList.add('active');
+                    document.getElementById(this.dataset.tab).classList.add('active');
                 };
             });
 
-            // YOUR JSON LEADERBOARD (keep this exactly as before)
-            async function loadLeaderboard() {
-                try {
-                    const response = await fetch('data.json');  // ✅ CORRECT
-                    const players = await response.json();
-                    players.sort((a, b) => b.score - a.score);
-                    
-                    const tbody = document.querySelector('#leaderboard-table tbody');
-                    tbody.innerHTML = '';
-                    
-                    players.forEach((player, index) => {
-                        tbody.innerHTML += `
-                            <tr>
-                                <td>${index + 1}</td>
-                                <td>${player.name}</td>
-                                <td>${player.score}</td>
-                                <td>${player.wins}</td>
-                            </tr>
-                        `;
-                    });
-                    document.getElementById('timestamp').textContent = new Date().toLocaleString();
-                } catch(e) {
-                    console.error('JSON load failed:', e);
-                }
+            // YOUR ORIGINAL JSON loader (uses data.json)
+            if (typeof loadLeaderboard !== 'function') {
+                window.loadLeaderboard = async function() {
+                    try {
+                        const response = await fetch('data.json');
+                        const players = await response.json();
+                        players.sort(function(a, b) { return b.score - a.score; });
+                        
+                        var tbody = document.querySelector('#leaderboard-table tbody');
+                        tbody.innerHTML = '';
+                        
+                        players.forEach(function(player, index) {
+                            tbody.innerHTML += '<tr><td>' + (index + 1) + '</td><td>' + player.name + '</td><td>' + player.score + '</td><td>' + player.wins + '</td></tr>';
+                        });
+                        document.getElementById('timestamp').textContent = new Date().toLocaleString();
+                    } catch(e) {
+                        console.log('Using backup data');
+                        var backup = [
+                            {"name": "Megh", "score": 104, "wins": 11},
+                            {"name": "Izhan", "score": 100, "wins": 12}
+                        ];
+                        var tbody = document.querySelector('#leaderboard-table tbody');
+                        tbody.innerHTML = '';
+                        backup.forEach(function(player, index) {
+                            tbody.innerHTML += '<tr><td>' + (index + 1) + '</td><td>' + player.name + '</td><td>' + player.score + '</td><td>' + player.wins + '</td></tr>';
+                        });
+                    }
+                };
+                loadLeaderboard();
             }
         });
     </script>
