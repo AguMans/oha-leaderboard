@@ -28,6 +28,10 @@
             background: #ff4444; color: white; border: none; 
             padding: 10px 20px; border-radius: 6px; cursor: pointer;
         }
+        .player-card {
+            background: #2a2a2a; padding: 20px; border-radius: 8px; 
+            border-left: 4px solid #00ccff; margin: 10px 0;
+        }
     </style>
 </head>
 <body>
@@ -43,11 +47,10 @@
         </div>
     </div>
 
-    <!-- YOUR ORIGINAL CONTENT -->
+    <!-- MAIN CONTENT -->
     <div id="main-app" style="display: none;">
         <button id="logout-btn" onclick="logout()">Logout</button>
         
-        <!-- YOUR ORIGINAL TABS -->
         <div class="tabs-container">
             <div class="tab-bar">
                 <div class="tab active" data-tab="leaderboard">Leaderboard</div>
@@ -75,8 +78,8 @@
             </div>
 
             <div id="players" class="tab-content">
-                <h1>Players</h1>
-                <p>Your players list goes here</p>
+                <h1>Players Roster</h1>
+                <div id="players-list"></div>
             </div>
         </div>
     </div>
@@ -95,13 +98,50 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
 
+        // ALL PLAYERS DATA (ICC players removed)
+        const allPlayers = [
+            {"name": "Megh", "score": 104, "wins": 11},
+            {"name": "Izhan", "score": 100, "wins": 12},
+            {"name": "Agatsya", "score": 98, "wins": 10},
+            {"name": "Shayaan", "score": 83, "wins": 2},
+            {"name": "Farhan", "score": 67, "wins": 3}
+        ];
+
+        // Leaderboard function
+        window.loadLeaderboard = function() {
+            var players = allPlayers.slice().sort(function(a, b) { 
+                return b.score - a.score; 
+            });
+            
+            var tbody = document.querySelector('#leaderboard-table tbody');
+            tbody.innerHTML = '';
+            
+            players.forEach(function(player, index) {
+                tbody.innerHTML += '<tr><td>' + (index + 1) + '</td><td>' + player.name + '</td><td>' + player.score + '</td><td>' + player.wins + '</td></tr>';
+            });
+            document.getElementById('timestamp').textContent = new Date().toLocaleString();
+        };
+
+        // Players list function
+        window.loadPlayers = function() {
+            var playersList = document.getElementById('players-list');
+            playersList.innerHTML = '';
+            
+            allPlayers.forEach(function(player) {
+                var card = document.createElement('div');
+                card.className = 'player-card';
+                card.innerHTML = '<h3>' + player.name + '</h3><p>Points: ' + player.score + ' | Wins: ' + player.wins + '</p>';
+                playersList.appendChild(card);
+            });
+        };
+
         // Login
         document.getElementById('google-login-btn').onclick = function() {
-            const provider = new firebase.auth.GoogleAuthProvider();
+            var provider = new firebase.auth.GoogleAuthProvider();
             auth.signInWithPopup(provider).then(function() {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('main-app').style.display = 'block';
-                if (typeof loadLeaderboard === 'function') loadLeaderboard();
+                loadLeaderboard();
             }).catch(function(error) {
                 document.getElementById('login-status').textContent = 'Login failed';
             });
@@ -120,13 +160,13 @@
             if (user) {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('main-app').style.display = 'block';
-                if (typeof loadLeaderboard === 'function') loadLeaderboard();
+                loadLeaderboard();
             }
         });
 
-        // Wait for DOM + tabs + YOUR JSON loader
+        // DOM ready
         window.addEventListener('load', function() {
-            // Tab switching
+            // Tabs
             var tabs = document.querySelectorAll('.tab');
             tabs.forEach(function(tab) {
                 tab.onclick = function() {
@@ -134,39 +174,14 @@
                     document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
                     this.classList.add('active');
                     document.getElementById(this.dataset.tab).classList.add('active');
+                    
+                    // Load content for active tab
+                    if (this.dataset.tab === 'leaderboard') loadLeaderboard();
+                    if (this.dataset.tab === 'players') loadPlayers();
                 };
             });
-
-            // YOUR ORIGINAL JSON loader (uses data.json)
-            if (typeof loadLeaderboard !== 'function') {
-                window.loadLeaderboard = async function() {
-                    try {
-                        const response = await fetch('data.json');
-                        const players = await response.json();
-                        players.sort(function(a, b) { return b.score - a.score; });
-                        
-                        var tbody = document.querySelector('#leaderboard-table tbody');
-                        tbody.innerHTML = '';
-                        
-                        players.forEach(function(player, index) {
-                            tbody.innerHTML += '<tr><td>' + (index + 1) + '</td><td>' + player.name + '</td><td>' + player.score + '</td><td>' + player.wins + '</td></tr>';
-                        });
-                        document.getElementById('timestamp').textContent = new Date().toLocaleString();
-                    } catch(e) {
-                        console.log('Using backup data');
-                        var backup = [
-                            {"name": "Megh", "score": 104, "wins": 11},
-                            {"name": "Izhan", "score": 100, "wins": 12}
-                        ];
-                        var tbody = document.querySelector('#leaderboard-table tbody');
-                        tbody.innerHTML = '';
-                        backup.forEach(function(player, index) {
-                            tbody.innerHTML += '<tr><td>' + (index + 1) + '</td><td>' + player.name + '</td><td>' + player.score + '</td><td>' + player.wins + '</td></tr>';
-                        });
-                    }
-                };
-                loadLeaderboard();
-            }
+            
+            loadLeaderboard();
         });
     </script>
 </body>
