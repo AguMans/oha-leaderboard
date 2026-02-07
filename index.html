@@ -140,7 +140,7 @@
             // YOUR JSON LEADERBOARD (keep this exactly as before)
             async function loadLeaderboard() {
                 try {
-                    const response = await fetch('data.json');
+                    const response = await fetch('data.json');  // ✅ CORRECT
                     const players = await response.json();
                     players.sort((a, b) => b.score - a.score);
                     
