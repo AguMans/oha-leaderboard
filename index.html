@@ -11,7 +11,7 @@
     <!-- LOGIN SCREEN -->
     <div id="login-screen" class="auth-overlay">
         <div class="login-box">
-            <h1>🏏 OHA Login</h1>
+            <h1>OHA Login</h1>
             <button id="google-login-btn" class="google-btn">
                 <img src="https://developers.google.com/identity/images/g-logo.png" width="20"> 
                 Sign in with Google
@@ -32,7 +32,7 @@
             </div>
 
             <div id="leaderboard" class="tab-content active">
-                <h1>🏏 OHA Leaderboard</h1>
+                <h1>OHA Leaderboard</h1>
                 <table id="leaderboard-table">
                     <thead><tr><th>Rank</th><th>Player</th><th>Points</th><th>Wins</th></tr></thead>
                     <tbody></tbody>
@@ -41,7 +41,7 @@
             </div>
 
             <div id="founder" class="tab-content">
-                <h1>👑 Our Founder</h1>
+                <h1>Our Founder</h1>
                 <div class="founder-info">
                     <img src="founder.jpg.jpg" alt="MAHAN AGATSYA" class="founder-photo">
                     <h2>MAHAN AGATSYA</h2>
@@ -51,7 +51,7 @@
             </div>
 
             <div id="players" class="tab-content">
-                <h1>🏃 Players</h1>
+                <h1>Players</h1>
                 <p>Your players list goes here</p>
             </div>
         </div>
@@ -103,12 +103,23 @@
         });
 
         // SAMPLE LEADERBOARD DATA (replace with your real data)
-        function loadLeaderboard() {
-            const data = [
-                {rank:1, name:"Mahan Agatsya", points:1250, wins:42},
-                {rank:2, name:"Player 2", points:980, wins:31},
-                {rank:3, name:"Player 3", points:750, wins:25}
-            ];
+async function loadLeaderboard() {
+    try {
+        const response = await fetch('players.json');
+        const players = await response.json();
+        players.sort((a, b) => b.score - a.score);
+        
+        const tbody = document.querySelector('#leaderboard-table tbody');
+        tbody.innerHTML = '';
+        players.forEach((player, i) => {
+            tbody.innerHTML += `<tr><td>${i+1}</td><td>${player.name}</td><td>${player.score}</td><td>${player.wins}</td></tr>`;
+        });
+        document.getElementById('timestamp').textContent = new Date().toLocaleString();
+    } catch(e) {
+        console.error('JSON load failed');
+    }
+}
+
             
             const tbody = document.querySelector('#leaderboard-table tbody');
             tbody.innerHTML = '';
@@ -117,7 +128,7 @@
                 tbody.innerHTML += row;
             });
             document.getElementById('timestamp').textContent = new Date().toLocaleString();
-        }
+        
 
         // Tab switching
         document.querySelectorAll('.tab').forEach(tab => {
