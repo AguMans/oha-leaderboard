@@ -37,6 +37,19 @@
             border-left: 4px solid #ff4444; margin: 20px 0;
             text-align: center;
         }
+        .social-card {
+            background: #2a2a2a; padding: 20px; border-radius: 12px; 
+            margin: 15px 0; border-left: 4px solid #00ccff;
+            text-align: center;
+        }
+        .social-btn {
+            display: block; width: 100%; padding: 12px; margin: 8px 0;
+            background: #00ccff; color: black; text-decoration: none;
+            border-radius: 6px; font-weight: 600; border: none;
+        }
+        .social-btn:hover {
+            background: #0099cc;
+        }
     </style>
 </head>
 <body>
@@ -62,6 +75,7 @@
                 <div class="tab" data-tab="founder">Our Founder</div>
                 <div class="tab" data-tab="players">Players</div>
                 <div class="tab" data-tab="icc">ICC</div>
+                <div class="tab" data-tab="socials">Socials</div>
             </div>
 
             <div id="leaderboard" class="tab-content active">
@@ -93,6 +107,26 @@
                 <div class="icc-content">
                     <p>ICC, the organization which completely copied our innovative model, lost to us in an embarrassing defeat of 5-2 even if we sent our worst players we would have easily won.</p>
                     <p>ICC uses deception and manipulation and deception to lure in new recruits.</p>
+                </div>
+            </div>
+
+            <div id="socials" class="tab-content">
+                <h1>Mahan's Socials</h1>
+                <div class="social-card">
+                    <h3>Instagram</h3>
+                    <a href="https://www.instagram.com/notagatsya/" class="social-btn" target="_blank">Open Instagram</a>
+                </div>
+                <div class="social-card">
+                    <h3>Twitter/X</h3>
+                    <a href="https://x.com/Delvar_Steel" class="social-btn" target="_blank" onclick="openTwitterApp()">Twitter/X</a>
+                </div>
+                <div class="social-card">
+                    <h3>Email</h3>
+                    <a href="mailto:agatsyashinde.021026@gmail.com" class="social-btn">Email Me</a>
+                </div>
+                <div class="social-card">
+                    <h3>Discord</h3>
+                    <a href="https://discord.com/users/1033700747818319934" class="social-btn" target="_blank" onclick="openDiscordApp()">Add on Discord</a>
                 </div>
             </div>
         </div>
@@ -148,6 +182,27 @@
                 playersList.appendChild(card);
             });
         };
+
+        // App deep linking
+        function openTwitterApp() {
+            var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            if (isMobile) {
+                window.location.href = 'twitter://user?screen_name=Delvar_Steel';
+                setTimeout(function() {
+                    window.location.href = 'https://x.com/Delvar_Steel';
+                }, 1000);
+            }
+        }
+
+        function openDiscordApp() {
+            var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            if (isMobile) {
+                window.location.href = 'discord://users/1033700747818319934';
+                setTimeout(function() {
+                    window.location.href = 'https://discord.com/users/1033700747818319934';
+                }, 1000);
+            }
+        }
 
         // Login
         document.getElementById('google-login-btn').onclick = function() {
